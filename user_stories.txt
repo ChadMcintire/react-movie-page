@@ -1,0 +1,40 @@
+﻿What does anonomously mean as a requirement
+
+Look at a specific movie with details and reviews
+
+Browse movies anonomously
+
+
+Scenario: User navigates to initial screen 
+  Given the site is accessed
+  When the initial page loads
+  Then a list of movies is displayed to the user
+
+Scenario: A user appears on the website and needs to signin
+  Given the user navigates to the load screen
+  When the user enter a user name and password and presses login
+  Then the user will be registered on the sight
+
+Scenario: User wants to see movie details 
+  Given A movie is selected
+  When the user clicks on a movie icon
+  Then movie info and reviews page is loaded
+
+Scenario: A user wants to query for movies
+  Given search input in the search input box
+  When search button is pressed
+  Then a page containing search results will be displayed
+
+Scenario: Wants to post a review
+  Given the movies details page is selected for a given movie
+  When text is entered in the leave comment box and the submit button pressed
+  Then a review would be submitted for the movie
+
+Backlog:
+  Make title bar component (company title, home button, login, search form, search button
+  Make login component (email, password, and submit)
+  Make a test to see if star is contained in the title using the search form
+  Make an array component of thumb nails for the video’s searched
+  Make a details component (title, released, genre, actors, plot, review title box,  review text, submit button, back to results button) 
+ 
+  
