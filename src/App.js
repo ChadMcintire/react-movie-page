@@ -1,26 +1,95 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class RegResults extends React.Component{
+  state = {
+           message: "",
+           error: ""
+          }
+   
+  async componentDidMount() {
+    const postBody = {method:'POST', headers: {"Content-Type":
+    "application/json"}, body: JSON.stringify({email: this.props.uname,
+    password:this.props.pass})}
+    const response = await fetch('http://localhost:3001/register', postBody)
+    await response.json()
+      .then(
+        data => this.setState({status:data.status,message:data.message}),
+        error => {
+          this.setState({ error: 'Unable to load Post' })
+      })
+  }
+  
+  
+  render(){
+    return(
+    <p>{this.state.message}</p>
+  )}
 }
 
-export default App;
+class App extends React.Component{
+  state = {
+           isLoginDisplayed: false,  //{action: 'Browse'}
+           isSearchDisplayed: false,
+           areDetailsDisplayed: false,
+           isHomeDisplayed: true,
+           isRegResultsDisplayed: false,
+           uname: "",
+           pass: ""
+          }
+
+  handleChange = (event) => {
+  const target = event.target;
+  const name = target.name;
+
+  this.setState({[name]: target.value});
+  }
+
+  doLogin = () => {
+    var keys = Object.keys(this.state).filter(k => this.state[k]);
+    this.setState({
+      [keys]: false,
+      isLoginDisplayed: true  
+    });
+  }
+
+  register = () => {
+    var keys = Object.keys(this.state).filter(k => this.state[k]);
+    this.setState({
+      [keys]: false,
+      isRegResultsDisplayed: true
+    });
+    
+  }
+
+  render(){
+  var addLoginForm = (
+    <form id="loginform">
+      <label>UserName</label>
+      <input type="text" name="uname" onChange={this.handleChange} value={this.state.uname}/>
+      <label>Password</label>
+      <input type="text" onChange={this.handleChange} value={this.state.pass} name="pass"/>
+      <button name="sub" onClick={this.register}>Submit</button>
+    </form>
+  )
+  return (
+    <div className="TitleBar">
+      <b className="App-header">GMDB  </b>
+      <button name='home'>Home</button>
+      <button name='login' onClick={this.doLogin}>login</button>
+      <input name='movieSearch'/>
+      <button name='searchBtn'>Search</button>
+      {
+          this.state.isLoginDisplayed
+          ? addLoginForm
+          :this.state.isRegResultsDisplayed
+          ? <RegResults uname={this.state.uname} pass={this.state.pass} />
+          : <p> </p>
+      }
+    </div>
+  );
+  }
+}
+
+
+export default App, RegResults;
